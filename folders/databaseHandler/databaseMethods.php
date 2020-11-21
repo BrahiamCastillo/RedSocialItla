@@ -105,6 +105,35 @@ class DataBaseMethods {
         }
     }
 
+    public function getUserByUS_Pas($username,$password) {
+
+        $stm = $this->connection->db->prepare('Select * FROM Usuario WHERE usuario = ? and clave = ?');
+        $stm->bind_param('ss',$username, $password);
+        $stm->execute();
+
+        $result = $stm->get_result();
+
+        if($result->num_rows === 0) {
+
+            return null;
+
+        } else {
+            $row = $result->fetch_object();
+            $user = new Usuario();
+
+            $user->id_usuario = $row->id_usuario;
+            $user->nombre = $row->nombre;
+            $user->apellido = $row->apellido;
+            $user->telefono = $row->telefono;
+            $user->correo = $row->correo;
+            $user->usuario = $row->usuario;
+            $user->clave = $row->clave;
+
+            $stm->close();
+            return $user;
+        }
+    }
+
     public function getPublications($arrayFriends) {
 
         $tableList = array();
@@ -225,12 +254,10 @@ class DataBaseMethods {
         $stm->close();
     }
 
-    ///Se debe agregar un campo de id_usuario a addComment, tanto aquí como en la base de datos
-
     public function addComment($comment) {
 
-        $stm = $this->connection->db->prepare('insert into Comentarios(id_publicacion,comentario,fecha_hora) values(?,?,?)');
-        $stm->bind_param('iss',$comment->id_publicacion,$comment->comentario,$comment->fecha_hora);
+        $stm = $this->connection->db->prepare('insert into Comentarios(id_publicacion,id_usuario,comentario,fecha_hora) values(?,?,?,?)');
+        $stm->bind_param('iss',$comment->id_publicacion,$comment->id_usuario,$comment->comentario,$comment->fecha_hora);
         $stm->execute();
         $stm->close();
     }
@@ -242,8 +269,6 @@ class DataBaseMethods {
         $stm->execute();
         $stm->close();
     }
-
-    ///Se debe agregar un constraint en la reference foranea para la eliminación en cascada tanto de publicaciones como comentarios.
 
     public function deletePublication($idPublication) {
 

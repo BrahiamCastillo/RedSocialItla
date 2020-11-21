@@ -3,7 +3,7 @@
 require_once '../JsonHandler/JsonFileHandler.php';
 
 class databaseConnection {
-    private $db;
+    public $db;
     private $json;
 
     function __construct($directory)

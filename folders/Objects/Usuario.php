@@ -1,15 +1,14 @@
 <?php 
 
 class Usuario {
-    private $id_usuario;
-    private $nombre;
-    private $telefono;
-    private $correo;
-    private $usuario;
-    private $clave;
+    public $nombre;
+    public $apellido;
+    public $telefono;
+    public $correo;
+    public $usuario;
+    public $clave;
 
-    function InizializeData(
-        $id_usuario, 
+    public function InizializeData(
         $nombre, 
         $apellido,
         $telefono,
@@ -18,13 +17,12 @@ class Usuario {
         $clave
         ) {
 
-            $this->id_usuario = $id_usuario; 
             $this->nombre = $nombre; 
             $this->apellido = $apellido;
             $this->telefono = $telefono;
             $this->correo = $correo;
             $this->usuario = $usuario;
-            $this->clave = $clave ;
+            $this->clave = $clave;
 
         }
 }
