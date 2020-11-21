@@ -4,9 +4,17 @@ require_once '../Objects/Usuario.php';
 require_once '../databaseHandler/databaseConnection.php';
 require_once '../databaseHandler/databaseMethods.php';
 
+session_start();
+
+if (isset($_SESSION['login'])) {
+
+    header('Location: ../../index.php');
+}
+
+
 if (
     isset($_POST['nombre']) && isset($_POST['apellido']) && isset($_POST['telefono']) && isset($_POST['correo'])
-    && isset($_POST['usuario']) && isset($_POST['clave'])) {
+    && isset($_POST['usuario']) && isset($_POST['clave']) && isset($_POST['claveR']) && $_POST['clave'] == $_POST['claveR']) {
 
     $database = new DataBaseMethods('../databaseHandler');
 
@@ -25,7 +33,13 @@ if (
     $message = "¡Registro exitoso!";
     echo "<script type='text/javascript'>alert('$message');</script>";
 
-    header('Location: ../../index.php')
+    header('Location: ../../index.php');
+
+} 
+
+if($_POST['clave'] != $_POST['claveR']) {
+    $message = "¡El registro no ha sido exitoso!, revise si las contraseñas coinciden";
+    echo "<script type='text/javascript'>alert('$message');</script>";
 }
 
 ?>
@@ -63,7 +77,7 @@ if (
                 <div class="form-group">
                     <label for="correo">Correo</label>
                     <input type="email" class="form-control" id="correo" aria-describedby="emailHelp" name='correo'>
-                    <small id="emailHelp" class="form-text text-muted">Ingresar correo válido.</small>
+                    <small id="emailHelp" class="form-text text-muted">Ingresar un correo válido.</small>
                 </div>
                 <div class="form-group">
                     <label for="usuario">Usuario:</label>
@@ -72,6 +86,10 @@ if (
                 <div class="form-group">
                     <label for="clave">Contraseña</label>
                     <input type="password" class="form-control" id="clave" name='clave'>
+                </div>
+                <div class="form-group">
+                    <label for="claveR">Repetir contraseña</label>
+                    <input type="password" class="form-control" id="claveR" name='claveR'>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Registrarse</button>
             </form>
