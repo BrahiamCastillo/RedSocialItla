@@ -1,7 +1,7 @@
 <?php 
 
 class Usuario {
-    private $id;
+    private $id_usuario;
     private $nombre;
     private $telefono;
     private $correo;
@@ -9,7 +9,7 @@ class Usuario {
     private $clave;
 
     function InizializeData(
-        $id, 
+        $id_usuario, 
         $nombre, 
         $apellido,
         $telefono,
@@ -18,7 +18,7 @@ class Usuario {
         $clave
         ) {
 
-            $this->id = $id; 
+            $this->id_usuario = $id_usuario; 
             $this->nombre = $nombre; 
             $this->apellido = $apellido;
             $this->telefono = $telefono;

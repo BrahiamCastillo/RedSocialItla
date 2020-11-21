@@ -13,9 +13,8 @@ class databaseConnection {
         $this->db = new mysqli($read->server,$read->user,$read->password,$read->database);
 
         if($this->db->connect_error) {
+
             exit('Error de conexión');
         }
     }
 }
-
-?>
