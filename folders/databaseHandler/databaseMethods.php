@@ -243,6 +243,8 @@ class DataBaseMethods {
         $stm->close();
     }
 
+    ///Se debe agregar un constraint en la reference foranea para la eliminación en cascada tanto de publicaciones como comentarios.
+
     public function deletePublication($idPublication) {
 
         $stm = $this->connection->db->prepare('delete from Publicacion where id_publicacion = ?');
