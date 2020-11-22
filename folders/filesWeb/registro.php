@@ -80,34 +80,34 @@ if (
                 <h1 class="h3 mb-3 font-weight-normal">Registro.</h1>
                 <div class="form-group">
                     <label for="nombre">Nombre:</label>
-                    <input type="text" class="form-control" id="nombre" name='nombre'>
+                    <input type="text" class="form-control textos" id="nombre" name='nombre'>
                 </div>
                 <div class="form-group">
                     <label for="apellido">Apellido:</label>
-                    <input type="text" class="form-control" id="apellido" name='apellido'>
+                    <input type="text" class="form-control textos" id="apellido" name='apellido'>
                 </div>
                 <div class="form-group">
                     <label for="telefono">Teléfono:</label>
-                    <input type="text" class="form-control" id="telefono" name='telefono'>
+                    <input type="text" class="form-control textos" id="telefono" name='telefono'>
                 </div>
                 <div class="form-group">
                     <label for="correo">Correo</label>
-                    <input type="email" class="form-control" id="correo" aria-describedby="emailHelp" name='correo'>
+                    <input type="email" class="form-control textos" id="correo" aria-describedby="emailHelp" name='correo'>
                     <small id="emailHelp" class="form-text text-muted">Ingresar un correo válido.</small>
                 </div>
                 <div class="form-group">
                     <label for="usuario">Usuario:</label>
-                    <input type="text" class="form-control" id="usuario" name='usuario'>
+                    <input type="text" class="form-control textos" id="usuario" name='usuario'>
                 </div>
                 <div class="form-group">
                     <label for="clave">Contraseña</label>
-                    <input type="password" class="form-control" id="clave" name='clave'>
+                    <input type="password" class="form-control textos" id="clave" name='clave'>
                 </div>
                 <div class="form-group">
                     <label for="claveR">Repetir contraseña</label>
-                    <input type="password" class="form-control" id="claveR" name='claveR'>
+                    <input type="password" class="form-control textos" id="claveR" name='claveR'>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Registrarse</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" id='submit'>Registrarse</button>
             </form>
         </div>
         <div class="col-md-4"></div>
@@ -115,3 +115,7 @@ if (
 </body>
 
 </html>
+<script src="../../folders\js\librarys\jquery\jquery-3.5.1.min.js"></script>
+<script src="../../folders\js\librarys\bootstrap\bootstrap.min.js"></script>
+<script src="../../folders\js\librarys\toastr\toastr.min.js"></script>
+<script src="../../folders\js\validacion.js"></script>

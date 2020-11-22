@@ -59,17 +59,17 @@ if (isset($_POST['usuario']) && isset($_POST['clave'])) {
             <form action='login.php' method="POST" class="form-signin">
                 <img class="mb-4" src="..\images\itla.png" alt="" width="180" height="100">
                 <h1 class="h3 mb-3 font-weight-normal">Ingrese sus credenciales.</h1>
-                <label for="usuario" class="sr-only">Usuario</label>
+                <label for="usuario" class="sr-only textos">Usuario</label>
                 <input type="text" id="usuario" class="form-control" placeholder="Usuario" name='usuario'>
                 <div>
                     <hr>
                 </div>
-                <label for="clave" class="sr-only">Contraseña</label>
+                <label for="clave" class="sr-only textos">Contraseña</label>
                 <input type="password" id="clave" class="form-control" placeholder="Contraseña" name='clave'>
                 <div>
                     <hr>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" id='boton'>Ingresar</button>
                 <a href='registro.php' class="btn btn-lg btn-primary btn-block">Registrarse</a>
                 <p class="mt-5 mb-3 text-muted">© 2017-2020</p>
             </form>
@@ -81,3 +81,7 @@ if (isset($_POST['usuario']) && isset($_POST['clave'])) {
 </body>
 
 </html>
+<script src="../../folders\js\librarys\jquery\jquery-3.5.1.min.js"></script>
+<script src="../../folders\js\librarys\bootstrap\bootstrap.min.js"></script>
+<script src="../../folders\js\librarys\toastr\toastr.min.js"></script>
+<script src="../../folders\js\validacion.js"></script>

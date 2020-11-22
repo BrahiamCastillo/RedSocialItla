@@ -1,25 +1,21 @@
 <?php 
 
 class Comentarios {
-    private $id_comentario;
-    private $id_publicacion;
-    private $id_usuario;
-    private $comentario;
-    private $fecha_hora;
+    public $id_comentario;
+    public $id_publicacion;
+    public $id_usuario;
+    public $comentario;
+    public $fecha_hora;
 
-    function InizializeData(
-        $id_comentario, 
+    public function InizializeData(
         $id_publicacion, 
         $id_usuario,
-        $comentario,
-        $fecha_hora
+        $comentario
         ) {
 
-            $this->id_comentario = $id_comentario;  
             $this->id_publicacion = $id_publicacion;  
             $this->id_usuario = $id_usuario; 
             $this->comentario = $comentario;
-            $this->fecha_hora = $fecha_hora;
 
         }
 }

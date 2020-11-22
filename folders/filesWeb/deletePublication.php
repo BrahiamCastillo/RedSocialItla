@@ -15,12 +15,12 @@ if (!isset($_SESSION['login'])) {
 
 $database = new DataBaseMethods('../databaseHandler');
 
-if(isset($_GET['id_amigo'])) {
+if(isset($_GET['id_publicacion'])) {
 
-    $idUser = $_GET['id_amigo'];
-    $database->deleteFriend($idUser);
+    $idPublication = $_GET['id_publicacion'];
+    $database->deletePublication($idPublication);
 
-    $message = "¡El usuario ya no es tu amigo!";
+    $message = "¡Publicación eliminada!";
     echo "<script type='text/javascript'>alert('$message');</script>";
 
     header('Location: ../../index.php');

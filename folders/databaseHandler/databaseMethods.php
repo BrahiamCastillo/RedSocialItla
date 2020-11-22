@@ -1,8 +1,9 @@
-<?php 
+<?php
 
 require_once 'databaseConnection.php';
 
-class DataBaseMethods {
+class DataBaseMethods
+{
     private $connection;
 
     function __construct($directory)
@@ -10,54 +11,52 @@ class DataBaseMethods {
         $this->connection = new databaseConnection($directory);
     }
 
-    public function getTableUsuario($user) {
+    public function getTableUsuario($user)
+    {
 
         $stm = $this->connection->db->prepare('Select * FROM usuario where usuario = ?');
-        $stm->bind_param('s',$user);
+        $stm->bind_param('s', $user);
         $stm->execute();
 
         $result = $stm->get_result();
 
-        if($result->num_rows === 0) {
+        if ($result->num_rows === 0) {
 
             return null;
-
         } else {
 
-                $row = $result->fetch_object(); 
-                $user = new Usuario();
+            $row = $result->fetch_object();
+            $user = new Usuario();
 
-                $user->id_usuario = $row->id_usuario;
-                $user->nombre = $row->nombre;
-                $user->apellido = $row->apellido;
-                $user->telefono = $row->telefono;
-                $user->correo = $row->correo;
-                $user->usuario = $row->usuario;
-                $user->clave = $row->clave;
+            $user->id_usuario = $row->id_usuario;
+            $user->nombre = $row->nombre;
+            $user->apellido = $row->apellido;
+            $user->telefono = $row->telefono;
+            $user->correo = $row->correo;
+            $user->usuario = $row->usuario;
+            $user->clave = $row->clave;
 
-                $stm->close();
-                return $user;
-
-            }
-
+            $stm->close();
+            return $user;
         }
+    }
 
-    public function getFriends($id) {
+    public function getFriends($id)
+    {
 
         $tableList = array();
 
         $stm = $this->connection->db->prepare('Select * FROM Amigos WHERE id_usuario = ?');
-        $stm->bind_param('i',$id);
+        $stm->bind_param('i', $id);
         $stm->execute();
 
         $result = $stm->get_result();
 
-        if($result->num_rows === 0) {
+        if ($result->num_rows === 0) {
 
             return $tableList;
-
         } else {
-            while($row = $result->fetch_object()) {
+            while ($row = $result->fetch_object()) {
                 $user = new Amigos();
 
                 $user->id_amigo = $row->id_amigo;
@@ -71,18 +70,18 @@ class DataBaseMethods {
         }
     }
 
-    public function searchUser($id) {
+    public function searchUser($id)
+    {
 
-        $stm = $this->connection->db->prepare('Select * FROM Usuario WHERE id_usuario = ?');
-        $stm->bind_param('i',$id);
+        $stm = $this->connection->db->prepare('Select * FROM usuario WHERE id_usuario = ?');
+        $stm->bind_param('i', $id);
         $stm->execute();
 
         $result = $stm->get_result();
 
-        if($result->num_rows === 0) {
+        if ($result->num_rows === 0) {
 
             return null;
-
         } else {
             $row = $result->fetch_object();
             $user = new Usuario();
@@ -100,28 +99,29 @@ class DataBaseMethods {
         }
     }
 
-    public function totalFriends($id) {
+    public function totalFriends($id)
+    {
         $array = array();
         $friendIds = $this->getFriends($id);
-        foreach($friendIds as $fi) {
+        foreach ($friendIds as $fi) {
             $new = $this->searchUser($fi->id_amigo);
-            array_push($array,$new);
+            array_push($array, $new);
         }
         return $array;
     }
 
-    public function getUserByUS_Pas($username,$password) {
+    public function getUserByUS_Pas($username, $password)
+    {
 
         $stm = $this->connection->db->prepare('Select * FROM Usuario WHERE usuario = ? and clave = ?');
-        $stm->bind_param('ss',$username, $password);
+        $stm->bind_param('ss', $username, $password);
         $stm->execute();
 
         $result = $stm->get_result();
 
-        if($result->num_rows === 0) {
+        if ($result->num_rows === 0) {
 
             return null;
-
         } else {
             $row = $result->fetch_object();
             $user = new Usuario();
@@ -139,24 +139,22 @@ class DataBaseMethods {
         }
     }
 
-    public function getPublications($arrayFriends) {
+    public function getPublications($id)
+    {
 
         $tableList = array();
 
-        foreach($arrayFriends as $af) {
-            
-            $stm = $this->connection->db->prepare('Select * FROM Publicacion WHERE id_usuario = ?');
-            $stm->bind_param('i',$af->idAmigo);
-            $stm->execute();
+        $stm = $this->connection->db->prepare('Select * FROM Publicacion WHERE id_usuario = ?');
+        $stm->bind_param('i', $id);
+        $stm->execute();
 
         $result = $stm->get_result();
 
-        if($result->num_rows === 0) {
+        if ($result->num_rows === 0) {
 
             return $tableList;
-
         } else {
-            while($row = $result->fetch_object()) {
+            while ($row = $result->fetch_object()) {
                 $user = new Publicacion();
 
                 $user->id_publicacion = $row->id_publicacion;
@@ -165,29 +163,27 @@ class DataBaseMethods {
                 $user->id_usuario = $row->id_usuario;
 
                 array_push($tableList, $user);
-                }
-
             }
         }
 
+
         $stm->close();
         return $tableList;
-
     }
 
-    public function getPublicationById($idPublication) {
+    public function getPublicationById($idPublication)
+    {
 
 
         $stm = $this->connection->db->prepare('Select * FROM Publicacion WHERE id_publicacion = ?');
-        $stm->bind_param('i',$idPublication);
+        $stm->bind_param('i', $idPublication);
         $stm->execute();
 
         $result = $stm->get_result();
 
-        if($result->num_rows === 0) {
+        if ($result->num_rows === 0) {
 
             return null;
-
         } else {
 
             $row = $result->fetch_object();
@@ -201,104 +197,109 @@ class DataBaseMethods {
         }
 
         return $user;
-
     }
 
-    public function getComments($idPublication) {
+    public function getComments($idPublication)
+    {
 
         $tableList = array();
 
-        $stm = $this->connection->db->prepare('Select * FROM Comentarios WHERE id_publicacion = ?');
-        $stm->bind_param('i',$idPublication);
+        $stm = $this->connection->db->prepare('Select * FROM comentarios WHERE id_publicacion = ?');
+        $stm->bind_param('i', $idPublication);
         $stm->execute();
 
         $result = $stm->get_result();
 
-        if($result->num_rows === 0) {
+        if ($result->num_rows === 0) {
 
             return $tableList;
-
         } else {
-            while($row = $result->fetch_object()) {
+            while ($row = $result->fetch_object()) {
                 $user = new Comentarios();
 
-                $user->idComentario = $row->id_comentario;  
-                $user->idPublicacion = $row->id_publicacion;  
+                $user->id_comentario = $row->id_comentarios;
+                $user->id_publicacion = $row->id_publicacion;
+                $user->id_usuario = $row->id_usuario;
                 $user->comentario = $row->comentario;
                 $user->fecha_hora = $row->fecha_hora;
 
                 array_push($tableList, $user);
             }
-
-            $stm->close();
-            return $tableList;
         }
+        $stm->close();
+        return $tableList;
     }
 
-    public function addUser($dates) {
+    public function addUser($dates)
+    {
 
         $stm = $this->connection->db->prepare('insert into Usuario(nombre,apellido,telefono,correo,usuario,clave) values(?,?,?,?,?,?)');
-        $stm->bind_param('ssssss',$dates->nombre,$dates->apellido,$dates->telefono,$dates->correo,$dates->usuario,$dates->clave);
+        $stm->bind_param('ssssss', $dates->nombre, $dates->apellido, $dates->telefono, $dates->correo, $dates->usuario, $dates->clave);
         $stm->execute();
         $stm->close();
     }
 
-    public function addFriend($friend) {
+    public function addFriend($friend)
+    {
 
         $stm = $this->connection->db->prepare('insert into Amigos(id_usuario,id_amigo) values(?,?)');
-        $stm->bind_param('ii',$friend->id_usuario,$friend->id_amigo);
+        $stm->bind_param('ii', $friend->id_usuario, $friend->id_amigo);
         $stm->execute();
         $stm->close();
 
         $stm = $this->connection->db->prepare('insert into Amigos(id_usuario,id_amigo) values(?,?)');
-        $stm->bind_param('ii',$friend->id_amigo,$friend->id_usuario);
+        $stm->bind_param('ii', $friend->id_amigo, $friend->id_usuario);
         $stm->execute();
         $stm->close();
     }
 
-    public function addPublication($publication) {
+    public function addPublication($publication)
+    {
 
-        $stm = $this->connection->db->prepare('insert into Publicacion(publicacion,fecha_hora,id_usuario) values(?,?,?)');
-        $stm->bind_param('ssi',$publication->publicacion,$publication->fecha_hora,$publication->id_usuario);
+        $stm = $this->connection->db->prepare('insert into Publicacion(publicacion,id_usuario) values(?,?)');
+        $stm->bind_param('ss', $publication->publicacion, $publication->id_usuario);
         $stm->execute();
         $stm->close();
     }
 
-    public function addComment($comment) {
+    public function addComment($comment)
+    {
 
-        $stm = $this->connection->db->prepare('insert into Comentarios(id_publicacion,id_usuario,comentario,fecha_hora) values(?,?,?,?)');
-        $stm->bind_param('iss',$comment->id_publicacion,$comment->id_usuario,$comment->comentario,$comment->fecha_hora);
+        $stm = $this->connection->db->prepare('insert into Comentarios(id_publicacion,id_usuario,comentario) values(?,?,?)');
+        $stm->bind_param('iis', $comment->id_publicacion, $comment->id_usuario, $comment->comentario);
         $stm->execute();
         $stm->close();
     }
 
-    public function editPublication($publication) {
+    public function editPublication($publication)
+    {
 
-        $stm = $this->connection->db->prepare('update Publicacion set publicacion = ?, fecha_hora = ? where id_publicacion = ?');
-        $stm->bind_param('ssi',$publication->publicacion,$publication->fecha_hora,$publication->id_publicacion);
+        $stm = $this->connection->db->prepare('update Publicacion set publicacion = ? where id_publicacion = ?');
+        $stm->bind_param('si', $publication->publicacion, $publication->id_publicacion);
         $stm->execute();
         $stm->close();
     }
 
-    public function deletePublication($idPublication) {
+    public function deletePublication($idPublication)
+    {
 
         $stm = $this->connection->db->prepare('delete from Publicacion where id_publicacion = ?');
-        $stm->bind_param('i',$idPublication);
+        $stm->bind_param('i', $idPublication);
         $stm->execute();
         $stm->close();
     }
 
-    public function deleteFriend($id) {
+    public function deleteFriend($id)
+    {
 
         $stm = $this->connection->db->prepare('delete from Amigos where id_usuario = ?');
-        $stm->bind_param('i',$id);
+        $stm->bind_param('i', $id);
         $stm->execute();
         $stm->close();
 
         $stm = $this->connection->db->prepare('delete from Amigos where id_amigo = ?');
-        $stm->bind_param('i',$id);
+        $stm->bind_param('i', $id);
         $stm->execute();
         $stm->close();
     }
 }
-?>

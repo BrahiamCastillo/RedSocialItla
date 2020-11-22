@@ -81,7 +81,8 @@ if(isset($_POST['usuario'])) {
                             <p class="card-text">Nombre: <?= $f->nombre; ?></p>
                             <p class="card-text">Apellido: <?= $f->apellido; ?></p>
                             <p class="card-text">Usuario: <?= $f->usuario; ?></p>
-                            <a href="deleteFriend.php?id_usuario=<?= $f->id_usuario; ?>" class="btn btn-primary">Eliminar</a>
+                            <a href="folders\filesWeb\deleteFriend.php?id_amigo=<?= $f->id_usuario; ?>" class="btn btn-danger">Eliminar</a>
+                            <a href="folders\filesWeb\publicaciones.php?id_amigo=<?= $f->id_usuario; ?>" class="btn btn-primary">Ver Publicaciones</a>
                             <hr>
                         <?php endforeach; ?>
                     </div>
@@ -95,7 +96,7 @@ if(isset($_POST['usuario'])) {
                     <h5 class="card-title">Welcome <?= $user->nombre . ' ' . $user->apellido; ?></h5>
                     <p class="card-text">Esta es la red social del ITLA, donde puedes consultar amigos, agregarlos, compartir publicaciones y comentarlas,
                         ¡Disfruta de una buena amistad al estar conectado con los demás!</p>
-                    <a href="folders\filesWeb\publicaciones.php" class="btn btn-primary">Ver Publicaciones</a>
+                    <a href="folders\filesWeb\publicacionesUsuario.php?id_usuario=<?= $user->id_usuario; ?>" class="btn btn-primary">Ver Publicaciones</a>
                 </div>
             </div>
         </div>
@@ -114,3 +115,7 @@ if(isset($_POST['usuario'])) {
 </body>
 
 </html>
+<script src="folders\js\librarys\jquery\jquery-3.5.1.min.js"></script>
+<script src="folders\js\librarys\bootstrap\bootstrap.min.js"></script>
+<script src="folders\js\librarys\toastr\toastr.min.js"></script>
+<script src="folders\js\validacion.js"></script>
