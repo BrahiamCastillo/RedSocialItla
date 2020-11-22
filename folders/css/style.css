@@ -1,0 +1,19 @@
+body {
+    background-image: url("../images/fondo.jpg");
+}
+
+label {
+    color: rgb(38, 7, 173);
+    font-weight: bold;
+    font-style: italic;
+}
+
+h1 {
+    color: rgb(119, 9, 228);
+    font-weight: bold;
+    font-style: italic;
+}
+
+#lblUsuario {
+    margin-top: 30px;
+}

@@ -1,5 +1,6 @@
 <?php
 
+require_once '../JsonHandler/JsonFileHandler.php';
 require_once '../Objects/Usuario.php';
 require_once '../databaseHandler/databaseConnection.php';
 require_once '../databaseHandler/databaseMethods.php';
@@ -11,36 +12,49 @@ if (isset($_SESSION['login'])) {
     header('Location: ../../index.php');
 }
 
+if (isset($_POST['clave']) && isset($_POST['claveR'])) {
+    if ($_POST['clave'] != $_POST['claveR']) {
+
+        $message = "¡El registro no ha sido exitoso!, revise si las contraseñas coinciden";
+        echo "<script type='text/javascript'>alert('$message');</script>";
+    }
+}
 
 if (
     isset($_POST['nombre']) && isset($_POST['apellido']) && isset($_POST['telefono']) && isset($_POST['correo'])
-    && isset($_POST['usuario']) && isset($_POST['clave']) && isset($_POST['claveR']) && $_POST['clave'] == $_POST['claveR']) {
+    && isset($_POST['usuario']) && isset($_POST['clave']) && isset($_POST['claveR']) && $_POST['clave'] == $_POST['claveR']
+) {
+
 
     $database = new DataBaseMethods('../databaseHandler');
 
-    $newUser = new Usuario();
-    $newUser->InizializeData(
-        $_POST['nombre'],
-        $_POST['apellido'],
-        $_POST['telefono'],
-        $_POST['correo'],
-        $_POST['usuario'],
-        $_POST['clave']
-    );
+    $userValidation = $database->getTableUsuario($_POST['usuario']);
 
-    $database->addUser($newUser);
+    if ($userValidation == null) {
 
-    $message = "¡Registro exitoso!";
-    echo "<script type='text/javascript'>alert('$message');</script>";
+        $newUser = new Usuario();
+        $newUser->InizializeData(
+            $_POST['nombre'],
+            $_POST['apellido'],
+            $_POST['telefono'],
+            $_POST['correo'],
+            $_POST['usuario'],
+            $_POST['clave']
+        );
 
-    header('Location: ../../index.php');
+        $database->addUser($newUser);
 
-} 
+        $message = "¡Registro exitoso!";
+        echo "<script type='text/javascript'>alert('$message');</script>";
 
-if($_POST['clave'] != $_POST['claveR']) {
-    $message = "¡El registro no ha sido exitoso!, revise si las contraseñas coinciden";
-    echo "<script type='text/javascript'>alert('$message');</script>";
+        header('Location: ../../index.php');
+    } else {
+
+        $message = "¡El usuario ya existe!";
+        echo "<script type='text/javascript'>alert('$message');</script>";
+    }
 }
+
 
 ?>
 
@@ -52,16 +66,18 @@ if($_POST['clave'] != $_POST['claveR']) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link rel="stylesheet" href="..\css\librarys\bootstrap\bootstrap.min.css">
+    <link rel="stylesheet" href="..\css\style.css">
 </head>
 
 <body class="text-center">
     <hr>
     <div class="row">
-        <div class="col-md-4"></div>
+        <div class="col-md-2"><a href='../../index.php' class="btn btn-lg btn-primary btn-block">Volver atrás</a></div>
+        <div class="col-md-2"></div>
         <div class="col-md-4">
             <form action='registro.php' method="POST">
                 <img class="mb-4" src="..\images\itla.png" alt="" width="180" height="100">
-                <h1 class="h3 mb-3 font-weight-normal">Registro a la red social.</h1>
+                <h1 class="h3 mb-3 font-weight-normal">Registro.</h1>
                 <div class="form-group">
                     <label for="nombre">Nombre:</label>
                     <input type="text" class="form-control" id="nombre" name='nombre'>

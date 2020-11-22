@@ -1,6 +1,5 @@
 <?php
 
-require_once '../JsonHandler/JsonFileHandler.php';
 
 class databaseConnection {
     public $db;
@@ -18,3 +17,4 @@ class databaseConnection {
         }
     }
 }
+?>

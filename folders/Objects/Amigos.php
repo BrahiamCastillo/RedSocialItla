@@ -1,8 +1,8 @@
 <?php 
 
 class Amigos {
-    private $id_amigo;
-    private $id_usuario;
+    public $id_amigo;
+    public $id_usuario;
 
     function InizializeData(
         $id_amigo, 

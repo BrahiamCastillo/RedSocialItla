@@ -2,13 +2,15 @@
 
 session_start();
 
+require_once '../JsonHandler/JsonFileHandler.php';
 require_once '../databaseHandler/databaseConnection.php';
 require_once '../databaseHandler/databaseMethods.php';
+require_once '../Objects/Usuario.php';
 
 $data = new DataBaseMethods('../databaseHandler');
 $message = "";
 
-if (isset($_POST['usuario']) && $_POST['clave']) {
+if (isset($_POST['usuario']) && isset($_POST['clave'])) {
 
     $autentication = $data->getUserByUS_Pas($_POST['usuario'], $_POST['clave']);
 
@@ -40,6 +42,7 @@ if (isset($_POST['usuario']) && $_POST['clave']) {
 
     <link rel="stylesheet" href="..\css\librarys\bootstrap\bootstrap.min.css">
     <link rel="stylesheet" href="..\css\login.css">
+    <link rel="stylesheet" href="..\css\style.css">
 </head>
 
 <body class="text-center">

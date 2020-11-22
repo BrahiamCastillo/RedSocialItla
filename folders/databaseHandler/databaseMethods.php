@@ -1,10 +1,6 @@
 <?php 
 
 require_once 'databaseConnection.php';
-require_once '../Objects/Usuario.php';
-require_once '../Objects/Amigos.php';
-require_once '../Objects/Publicacion.php';
-require_once '../Objects/Comentarios.php';
 
 class DataBaseMethods {
     private $connection;
@@ -14,21 +10,21 @@ class DataBaseMethods {
         $this->connection = new databaseConnection($directory);
     }
 
-    public function getTableUsuario() {
+    public function getTableUsuario($user) {
 
-        $tableList = array();
-
-        $stm = $this->connection->db->prepare('Select * FROM usuario');
+        $stm = $this->connection->db->prepare('Select * FROM usuario where usuario = ?');
+        $stm->bind_param('s',$user);
         $stm->execute();
 
         $result = $stm->get_result();
 
         if($result->num_rows === 0) {
 
-            return $tableList;
+            return null;
 
         } else {
-            while($row = $result->fetch_object()) {
+
+                $row = $result->fetch_object(); 
                 $user = new Usuario();
 
                 $user->id_usuario = $row->id_usuario;
@@ -39,13 +35,12 @@ class DataBaseMethods {
                 $user->usuario = $row->usuario;
                 $user->clave = $row->clave;
 
-                array_push($tableList, $user);
+                $stm->close();
+                return $user;
+
             }
 
-            $stm->close();
-            return $tableList;
         }
-    }
 
     public function getFriends($id) {
 
@@ -76,10 +71,10 @@ class DataBaseMethods {
         }
     }
 
-    public function searchUser($user) {
+    public function searchUser($id) {
 
-        $stm = $this->connection->db->prepare('Select * FROM Usuario WHERE usuario = ?');
-        $stm->bind_param('s',$user);
+        $stm = $this->connection->db->prepare('Select * FROM Usuario WHERE id_usuario = ?');
+        $stm->bind_param('i',$id);
         $stm->execute();
 
         $result = $stm->get_result();
@@ -103,6 +98,16 @@ class DataBaseMethods {
             $stm->close();
             return $user;
         }
+    }
+
+    public function totalFriends($id) {
+        $array = array();
+        $friendIds = $this->getFriends($id);
+        foreach($friendIds as $fi) {
+            $new = $this->searchUser($fi->id_amigo);
+            array_push($array,$new);
+        }
+        return $array;
     }
 
     public function getUserByUS_Pas($username,$password) {
@@ -244,6 +249,11 @@ class DataBaseMethods {
         $stm->bind_param('ii',$friend->id_usuario,$friend->id_amigo);
         $stm->execute();
         $stm->close();
+
+        $stm = $this->connection->db->prepare('insert into Amigos(id_usuario,id_amigo) values(?,?)');
+        $stm->bind_param('ii',$friend->id_amigo,$friend->id_usuario);
+        $stm->execute();
+        $stm->close();
     }
 
     public function addPublication($publication) {
@@ -277,4 +287,18 @@ class DataBaseMethods {
         $stm->execute();
         $stm->close();
     }
+
+    public function deleteFriend($id) {
+
+        $stm = $this->connection->db->prepare('delete from Amigos where id_usuario = ?');
+        $stm->bind_param('i',$id);
+        $stm->execute();
+        $stm->close();
+
+        $stm = $this->connection->db->prepare('delete from Amigos where id_amigo = ?');
+        $stm->bind_param('i',$id);
+        $stm->execute();
+        $stm->close();
+    }
 }
+?>
